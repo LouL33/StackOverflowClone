@@ -1,0 +1,35 @@
+﻿@model IEnumerable<StackOverflowClone.Models.PostModel>
+@using StackOverflowClone.ViewModel;
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>Posts</h2>
+
+@if (HttpContext.Current.User.Identity.IsAuthenticated)
+{
+    <div>@Html.ActionLink("Create New", "Create", "PostModels")</div>
+}
+
+
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col-md-2" id="voteContainer-@item.Id">
+            @Html.Partial("_voteDisplay", new VoteButtonModel { Post = item, IsAllowedToVote = HttpContext.Current.User.Identity.IsAuthenticated })
+        </div>
+        <div class="col-md-10">
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object" src="..." alt="...">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">@item.Title</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+}

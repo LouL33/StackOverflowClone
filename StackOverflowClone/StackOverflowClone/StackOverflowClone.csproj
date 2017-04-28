@@ -286,6 +286,7 @@
     <Content Include="Views\PostModels\Details.cshtml" />
     <Content Include="Views\PostModels\Edit.cshtml" />
     <Content Include="Views\PostModels\Index.cshtml" />
+    <Content Include="Views\Shared\_voteDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

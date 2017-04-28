@@ -47,7 +47,7 @@ namespace StackOverflowClone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,TimePosted,UpVote,DownVote,ImageUrl,Body")] PostModel postModel)
+        public ActionResult Create([Bind(Include = "Title,Body")] PostModel postModel)
         {
             if (ModelState.IsValid)
             {

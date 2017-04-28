@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using StackOverflowClone.Models;
 
 namespace StackOverflowClone.Controllers
 {
@@ -17,7 +18,8 @@ namespace StackOverflowClone.Controllers
                 ViewBag.IsModerator = HttpContext.User.IsInRole( "Moderator");
                 ViewBag.IsAuthenticatedUser = HttpContext.User.IsInRole("AuthenticatedUser");
             }
-            return View();
+            var listOfPosts = new ApplicationDbContext().PostModels.ToList();
+            return View(listOfPosts);
         }
 
         //[Authorize(Roles = "AuthenticatedUser")]

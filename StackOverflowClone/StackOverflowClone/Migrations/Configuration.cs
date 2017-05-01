@@ -1,5 +1,8 @@
 namespace StackOverflowClone.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using StackOverflowClone.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -14,18 +17,37 @@ namespace StackOverflowClone.Migrations
 
         protected override void Seed(StackOverflowClone.Models.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            var AuthenticatedUserRole = "AuthenticatedUser";
+            var ModeratorRole = "Moderator";
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            var store = new RoleStore<IdentityRole>(context);
+            var manager = new RoleManager<IdentityRole>(store);
+
+            if (!context.Roles.Any(a => a.Name == AuthenticatedUserRole))
+            {
+                var role = new IdentityRole { Name = AuthenticatedUserRole };
+                manager.Create(role);
+            }
+            if (!context.Roles.Any(a => a.Name == ModeratorRole))
+            {
+                var role = new IdentityRole { Name = ModeratorRole };
+                manager.Create(role);
+            }
+
+
+            var defaultModerator = "Moderator@gmail.com";
+            var password = "Password1!";
+
+            if (!context.Users.Any(a => a.UserName == defaultModerator))
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+                var user = new ApplicationUser { UserName = defaultModerator };
+
+                userManager.Create(user, password);
+                userManager.AddToRole(user.Id, ModeratorRole);
+            }
         }
+
     }
 }
